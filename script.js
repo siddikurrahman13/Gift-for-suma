@@ -20,32 +20,51 @@ function toggleAudio() {
 }
 
 /* =========================
-   2. BACK BUTTON LOGIC
+   2. AUTOMATIC SMART BACK BUTTON LOGIC
 ========================= */
-var pageHistoryArray = [];
+var pageHistoryArray = ["welcome"];
 
+// ব্যাক বাটন ক্লিক লজিক
 function goBackPage() {
   if (pageHistoryArray.length > 1) {
+    // বর্তমান পেজ বাদ দেওয়া
     pageHistoryArray.pop();
     var previousPageId = pageHistoryArray[pageHistoryArray.length - 1];
     
+    // সব পেজ হাইড করা
     var allSections = document.querySelectorAll("section, .page");
     allSections.forEach(function(sec) {
       sec.classList.add("hidden");
+      sec.style.display = "none";
     });
 
+    // আগের পেজটি দেখানো
     var targetSec = document.getElementById(previousPageId);
     if (targetSec) {
       targetSec.classList.remove("hidden");
+      targetSec.style.display = "flex"; // অথবা প্রয়োজন অনুযায়ী ব্লক
     }
-  } else {
-    window.history.back();
   }
 }
-/* ======================================================== */
-/* নিচে তোমার আগের সব অরিজিনাল কোড অপরিবর্তিত থাকবে */
-/* ======================================================== */
 
+// স্বয়ংক্রিয়ভাবে পেজ পরিবর্তন ট্র্যাক করার অটোমেটিক ম্যাজিক লজিক
+document.addEventListener("click", function(e) {
+  // অন-ক্লিক ইভেন্ট থেকে টার্গেট বাটন বা পেজ আইডি ধরা
+  var btn = e.target.closest("button");
+  if (btn && btn.id !== "navBackBtn" && btn.id !== "navMusicBtn") {
+    setTimeout(function() {
+      var allSections = document.querySelectorAll("section, .page");
+      allSections.forEach(function(sec) {
+        // যেই সেকশনটি এখন দেখা যাচ্ছে (hidden ক্লাস নেই)
+        if (!sec.classList.contains("hidden") && sec.style.display !== "none" && sec.id) {
+          if (pageHistoryArray[pageHistoryArray.length - 1] !== sec.id) {
+            pageHistoryArray.push(sec.id);
+          }
+        }
+      });
+    }, 100);
+  }
+});
 
 /* =========================
    HIDE ALL PAGES
