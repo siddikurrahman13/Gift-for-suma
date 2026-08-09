@@ -2336,15 +2336,16 @@ button:hover{
     }
 
 }
-/* EXACT MATCH TOP BUTTONS DESIGN */
+/* EXACT MATCH DUAL CORNER BUTTONS */
 .top-nav-controls {
   position: fixed;
   top: 15px;
   left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 15px;
+  width: 100%;
+  display: flex !important;
+  justify-content: space-between !important; /* বাম ও ডান দুই কোনায় পাঠাবে */
+  padding: 0 15px !important;
+  box-sizing: border-box;
   z-index: 99999;
   pointer-events: none;
 }
@@ -2363,7 +2364,7 @@ button:hover{
   cursor: pointer;
   outline: none;
   margin: 0 !important;
-  display: flex;
+  display: inline-flex !important;
   align-items: center;
   justify-content: center;
   gap: 5px;
@@ -2375,6 +2376,7 @@ button:hover{
   background: rgba(255, 79, 163, 0.4) !important;
 }
 
-#navBackBtn {
-  display: none;
+/* Music Button-কে সবসময় ডানে রাখার জন্য */
+.top-nav-controls .right-btn {
+  margin-left: auto !important;
 }
