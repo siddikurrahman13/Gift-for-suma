@@ -13,18 +13,15 @@
 <body>
 
     <div class="stars"></div>
-    <!-- =========================
-     TOP NAVIGATION BUTTONS
-========================= -->
-<div class="topNavButtons">
-    <button id="musicBtn" class="topNavBtn">
-        🎵 <span>Music</span>
-    </button>
-
-    <button id="backBtn" class="topNavBtn">
-        ← <span>Back</span>
-    </button>
+    <!-- TOP NAVIGATION BUTTONS -->
+<div class="top-nav-controls">
+  <button id="navBackBtn" class="nav-btn" onclick="goBackPage()">‹ Back</button>
+  <button id="navMusicBtn" class="nav-btn" onclick="toggleAudio()">♫ Music</button>
 </div>
+
+<!-- MUSIC ELEMENT -->
+<audio id="bgMusic" loop src="birthday-music.mp3"></audio>
+
 
     <!-- Welcome -->
     <section id="welcome">
