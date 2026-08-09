@@ -20,13 +20,12 @@ function toggleAudio() {
 }
 
 /* =========================
-   2. ACCURATE PAGE HISTORY & BACK LOGIC
+   2. STEP-BY-STEP BACK LOGIC
 ========================= */
-var pageHistoryArray = ["welcome"];
+// স্টেটস মনে রাখার জন্য অ্যারে
+var pageHistoryArray = [{ pageId: "welcome", lineIndex: 0 }];
 
-// স্মার্ট পেজ পরিবর্তনের ফাংশন
-function showPage(pageId) {
-  // টাইপিং টাইমারগুলো ক্লিয়ার করা যাতে ব্যাক করলে লেখা ডুপ্লিকেট না হয়
+function showPage(pageId, lineIndex = 0) {
   if (chapter1Typing) clearInterval(chapter1Typing);
   if (chapter2Typing) clearInterval(chapter2Typing);
   if (chapter3Typing) clearInterval(chapter3Typing);
@@ -44,25 +43,25 @@ function showPage(pageId) {
     }
   }
 
-  // হিস্ট্রিতে পেজ আইডি যুক্ত করা
-  if (pageHistoryArray[pageHistoryArray.length - 1] !== pageId) {
-    pageHistoryArray.push(pageId);
+  // নতুন স্টেট পুশ করা (যদি আলাদা হয়)
+  const lastState = pageHistoryArray[pageHistoryArray.length - 1];
+  if (!lastState || lastState.pageId !== pageId || lastState.lineIndex !== lineIndex) {
+    pageHistoryArray.push({ pageId: pageId, lineIndex: lineIndex });
   }
 
-  // ব্যাক বাটন হাইড/শো লজিক (প্রথম পেজে ব্যাক বাটন থাকবে না)
+  // ব্যাক বাটন ভিজিবিলিটি
   var backBtn = document.getElementById("navBackBtn");
   if (backBtn) {
     backBtn.style.display = (pageHistoryArray.length > 1) ? "inline-flex" : "none";
   }
 }
 
-// ব্যাক বাটনে ক্লিক করলে ঠিক ১টি পেজ পেছনে যাওয়ার লজিক
+// ব্যাক বাটন ক্লিক লজিক (স্টেপ-বাই-স্টেপ পেছনে যাওয়া)
 function goBackPage() {
   if (pageHistoryArray.length > 1) {
-    pageHistoryArray.pop(); // বর্তমান পেজ মুছে ফেলা
-    var previousPageId = pageHistoryArray[pageHistoryArray.length - 1];
+    pageHistoryArray.pop(); // বর্তমান লাইন/স্টেট পপ করা
+    var prevState = pageHistoryArray[pageHistoryArray.length - 1]; // আগের স্টেট ধরা
     
-    // হিস্ট্রি থেকে রিমুভ না করে আগের পেজ রেন্ডার করা
     if (chapter1Typing) clearInterval(chapter1Typing);
     if (chapter2Typing) clearInterval(chapter2Typing);
     if (chapter3Typing) clearInterval(chapter3Typing);
@@ -70,14 +69,29 @@ function goBackPage() {
 
     hideAllPages();
 
-    const targetPage = document.getElementById(previousPageId);
+    const targetPage = document.getElementById(prevState.pageId);
     if (targetPage) {
       targetPage.classList.remove("hidden");
-      if (previousPageId === "finalChapter" || previousPageId === "birthdayReveal" || previousPageId === "celebrationScene" || previousPageId === "ultimateEnding") {
+      if (prevState.pageId === "finalChapter" || prevState.pageId === "birthdayReveal" || prevState.pageId === "celebrationScene" || prevState.pageId === "ultimateEnding") {
         targetPage.style.display = "flex";
       } else {
         targetPage.style.display = "";
       }
+    }
+
+    // আগের নির্দিষ্ট পেজ ও লাইনে নিয়ে যাওয়া
+    if (prevState.pageId === "chapter2") {
+      chapter2Line = prevState.lineIndex;
+      renderChapter2Static();
+    } else if (prevState.pageId === "chapter3") {
+      chapter3Line = prevState.lineIndex;
+      renderChapter3Static();
+    } else if (prevState.pageId === "birthdayReveal") {
+      birthdayLine = prevState.lineIndex;
+      renderBirthdayStatic();
+    } else if (prevState.pageId === "letterPage") {
+      line = prevState.lineIndex;
+      renderLetterStatic();
     }
 
     var backBtn = document.getElementById("navBackBtn");
@@ -117,7 +131,7 @@ function hideAllPages() {
    WELCOME → PASSWORD
 ========================= */
 function nextPage() {
-  showPage("passwordPage");
+  showPage("passwordPage", 0);
 }
 
 /* =========================
@@ -131,7 +145,7 @@ function checkPassword() {
     .trim();
 
   if (pass === "favourite chapter") {
-    showPage("envelopePage");
+    showPage("envelopePage", 0);
   } else {
     alert("Wrong Password 💔");
   }
@@ -141,10 +155,8 @@ function checkPassword() {
    ENVELOPE → CHAPTER 1
 ========================= */
 function openEnvelope() {
-  showPage("letterPage");
-  document
-    .getElementById("nextChapterBtn")
-    .style.display = "none";
+  showPage("letterPage", 0);
+  document.getElementById("nextChapterBtn").style.display = "none";
   startLetter();
 }
 
@@ -166,21 +178,19 @@ let chapter1Typing = null;
 
 function startLetter() {
   line = 0;
-  document
-    .getElementById("typewriter")
-    .innerHTML = "";
+  document.getElementById("typewriter").innerHTML = "";
   showNextLine();
 }
 
 function showNextLine() {
   if (line >= lines.length) {
     setTimeout(function () {
-      document
-        .getElementById("nextChapterBtn")
-        .style.display = "block";
+      document.getElementById("nextChapterBtn").style.display = "block";
     }, 500);
     return;
   }
+
+  showPage("letterPage", line);
 
   const text = lines[line];
   let i = 0;
@@ -198,11 +208,25 @@ function showNextLine() {
   }, 50);
 }
 
+function renderLetterStatic() {
+  const box = document.getElementById("typewriter");
+  const btn = document.getElementById("nextChapterBtn");
+  box.innerHTML = "";
+  for (let idx = 0; idx < line; idx++) {
+    box.innerHTML += lines[idx] + "<br><br>";
+  }
+  if (line >= lines.length) {
+    btn.style.display = "block";
+  } else {
+    btn.style.display = "none";
+  }
+}
+
 /* =========================
    CHAPTER 1 → CHAPTER 2
 ========================= */
 function goToChapter2() {
-  showPage("chapter2");
+  showPage("chapter2", 0);
   startChapter2();
 }
 
@@ -248,9 +272,7 @@ let chapter2Typing = null;
 
 function startChapter2() {
   chapter2Line = 0;
-  document
-    .getElementById("chapter2Story")
-    .innerHTML = "";
+  document.getElementById("chapter2Story").innerHTML = "";
   showChapter2Line();
 }
 
@@ -265,18 +287,14 @@ function showChapter2Line() {
     return;
   }
 
+  showPage("chapter2", chapter2Line);
+
   const text = chapter2Lines[chapter2Line];
   let specialClass = "";
 
-  if (text.includes("28 November 2023")) {
-    specialClass = "dateMoment";
-  }
-  if (text.includes("27 April 2024")) {
-    specialClass = "sadMoment";
-  }
-  if (text.includes("2 June 2025")) {
-    specialClass = "returnMoment";
-  }
+  if (text.includes("28 November 2023")) specialClass = "dateMoment";
+  if (text.includes("27 April 2024")) specialClass = "sadMoment";
+  if (text.includes("2 June 2025")) specialClass = "returnMoment";
 
   box.innerHTML = `<div class="chapterStoryText ${specialClass}"></div>`;
 
@@ -298,11 +316,36 @@ function showChapter2Line() {
   }, 45);
 }
 
+function renderChapter2Static() {
+  const box = document.getElementById("chapter2Story");
+  const btn = document.getElementById("chapter2NextBtn");
+
+  if (chapter2Line >= chapter2Lines.length) {
+    btn.innerHTML = "📖 Continue to Chapter 3";
+    btn.style.display = "inline-block";
+    btn.onclick = goToChapter3;
+    box.innerHTML = "";
+    return;
+  }
+
+  const text = chapter2Lines[chapter2Line];
+  let specialClass = "";
+
+  if (text.includes("28 November 2023")) specialClass = "dateMoment";
+  if (text.includes("27 April 2024")) specialClass = "sadMoment";
+  if (text.includes("2 June 2025")) specialClass = "returnMoment";
+
+  box.innerHTML = `<div class="chapterStoryText ${specialClass}">${text}</div>`;
+  btn.innerHTML = "Continue ✨";
+  btn.style.display = "inline-block";
+  btn.onclick = showChapter2Line;
+}
+
 /* =========================
    CHAPTER 2 → CHAPTER 3
 ========================= */
 function goToChapter3() {
-  showPage("chapter3");
+  showPage("chapter3", 0);
   startChapter3();
 }
 
@@ -330,12 +373,8 @@ let chapter3Typing = null;
 
 function startChapter3() {
   chapter3Line = 0;
-  document
-    .getElementById("chapter3Story")
-    .innerHTML = "";
-  document
-    .getElementById("chapter3NextBtn")
-    .style.display = "none";
+  document.getElementById("chapter3Story").innerHTML = "";
+  document.getElementById("chapter3NextBtn").style.display = "none";
   showNextChapter3Line();
 }
 
@@ -349,6 +388,8 @@ function showNextChapter3Line() {
     btn.onclick = goToFinalChapter;
     return;
   }
+
+  showPage("chapter3", chapter3Line);
 
   const text = chapter3Lines[chapter3Line];
   let i = 0;
@@ -369,11 +410,30 @@ function showNextChapter3Line() {
   }, 45);
 }
 
+function renderChapter3Static() {
+  const box = document.getElementById("chapter3Story");
+  const btn = document.getElementById("chapter3NextBtn");
+
+  if (chapter3Line >= chapter3Lines.length) {
+    btn.innerHTML = "💌 Continue to Final Chapter";
+    btn.style.display = "inline-block";
+    btn.onclick = goToFinalChapter;
+    box.innerHTML = "";
+    return;
+  }
+
+  const text = chapter3Lines[chapter3Line];
+  box.innerHTML = text;
+  btn.innerHTML = "Continue ✨";
+  btn.style.display = "inline-block";
+  btn.onclick = showNextChapter3Line;
+}
+
 /* =========================
    CHAPTER 3 → FINAL CHAPTER
 ========================= */
 function goToFinalChapter() {
-  showPage("finalChapter");
+  showPage("finalChapter", 0);
 }
 
 /* =========================
@@ -390,12 +450,8 @@ const birthdayLines = [
 let birthdayLine = 0;
 let birthdayTyping = null;
 
-/* =========================
-   OPEN FINAL SURPRISE
-   FINAL CHAPTER → BIRTHDAY WISH
-========================= */
 function openFinalSurprise() {
-  showPage("birthdayReveal");
+  showPage("birthdayReveal", 0);
 
   birthdayLine = 0;
   const box = document.getElementById("birthdayMessage");
@@ -408,10 +464,6 @@ function openFinalSurprise() {
   showBirthdayLine();
 }
 
-/* =========================
-   BIRTHDAY TYPEWRITER
-   ONE SENTENCE AT A TIME
-========================= */
 function showBirthdayLine() {
   const box = document.getElementById("birthdayMessage");
   const btn = document.getElementById("oneMoreBtn");
@@ -422,6 +474,8 @@ function showBirthdayLine() {
     btn.onclick = goToCelebration;
     return;
   }
+
+  showPage("birthdayReveal", birthdayLine);
 
   box.innerHTML = "";
   const text = birthdayLines[birthdayLine];
@@ -444,26 +498,37 @@ function showBirthdayLine() {
   }, 45);
 }
 
+function renderBirthdayStatic() {
+  const box = document.getElementById("birthdayMessage");
+  const btn = document.getElementById("oneMoreBtn");
+
+  if (birthdayLine >= birthdayLines.length) {
+    btn.innerHTML = "🎂 Let's Celebrate";
+    btn.style.display = "inline-block";
+    btn.onclick = goToCelebration;
+    box.innerHTML = "";
+    return;
+  }
+
+  const text = birthdayLines[birthdayLine];
+  box.innerHTML = text;
+  btn.innerHTML = "Continue ✨";
+  btn.style.display = "inline-block";
+  btn.onclick = showBirthdayLine;
+}
+
 /* =========================
    BIRTHDAY WISH → CELEBRATION
 ========================= */
 function goToCelebration() {
-  showPage("celebrationScene");
+  showPage("celebrationScene", 0);
 
   const message = document.getElementById("celebrationMessage");
   message.innerHTML = "";
 
-  document
-    .getElementById("celebrationContinueBtn")
-    .style.display = "none";
-
-  document
-    .getElementById("makeWishBtn")
-    .style.display = "inline-block";
-
-  document
-    .getElementById("celebrationConfetti")
-    .innerHTML = "";
+  document.getElementById("celebrationContinueBtn").style.display = "none";
+  document.getElementById("makeWishBtn").style.display = "inline-block";
+  document.getElementById("celebrationConfetti").innerHTML = "";
 }
 
 /* =========================
@@ -519,10 +584,9 @@ function createConfetti() {
 
 /* =========================
    CELEBRATION → FINAL MESSAGE
-   CINEMATIC TYPING ENDING
 ========================= */
 function goToFinalMessage() {
-  showPage("ultimateEnding");
+  showPage("ultimateEnding", 0);
 
   const box = document.getElementById("ultimateText");
   box.innerHTML = "";
@@ -575,18 +639,15 @@ function goToFinalMessage() {
     }, 45);
   }
 
-      /* Start typing */
-    setTimeout(function () {
-        typeFinalLine();
-    }, 1000);
-
+  setTimeout(function () {
+    typeFinalLine();
+  }, 1000);
 }
 
 /* =========================
    PAGE LOAD
 ========================= */
-
 window.addEventListener("load", function () {
-    pageHistoryArray = ["welcome"];
-    showPage("welcome");
+  pageHistoryArray = [{ pageId: "welcome", lineIndex: 0 }];
+  showPage("welcome", 0);
 });
