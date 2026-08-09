@@ -20,51 +20,67 @@ function toggleAudio() {
 }
 
 /* =========================
-   2. AUTOMATIC SMART BACK BUTTON LOGIC
+   2. ACCURATE BACK BUTTON LOGIC
 ========================= */
 var pageHistoryArray = ["welcome"];
 
-// ব্যাক বাটন ক্লিক লজিক
-function goBackPage() {
-  if (pageHistoryArray.length > 1) {
-    // বর্তমান পেজ বাদ দেওয়া
-    pageHistoryArray.pop();
-    var previousPageId = pageHistoryArray[pageHistoryArray.length - 1];
-    
-    // সব পেজ হাইড করা
-    var allSections = document.querySelectorAll("section, .page");
-    allSections.forEach(function(sec) {
-      sec.classList.add("hidden");
-      sec.style.display = "none";
-    });
+// স্মার্ট ফাংশন যা যেকোনো পেইজ ওপেন করার সময় কল হবে
+function trackAndShowPage(pageId) {
+  if (pageHistoryArray[pageHistoryArray.length - 1] !== pageId) {
+    pageHistoryArray.push(pageId);
+  }
+  renderPage(pageId);
+}
 
-    // আগের পেজটি দেখানো
-    var targetSec = document.getElementById(previousPageId);
-    if (targetSec) {
-      targetSec.classList.remove("hidden");
-      targetSec.style.display = "flex"; // অথবা প্রয়োজন অনুযায়ী ব্লক
-    }
+function renderPage(pageId) {
+  var allSections = document.querySelectorAll("section, .page");
+  allSections.forEach(function(sec) {
+    sec.classList.add("hidden");
+    sec.style.display = "none";
+  });
+
+  var targetSec = document.getElementById(pageId);
+  if (targetSec) {
+    targetSec.classList.remove("hidden");
+    targetSec.style.display = (pageId === "finalChapter" || pageId === "birthdayReveal" || pageId === "celebrationScene" || pageId === "ultimateEnding") ? "flex" : "";
+  }
+
+  // Back Button Hide/Show
+  var backBtn = document.getElementById("navBackBtn");
+  if (backBtn) {
+    backBtn.style.display = (pageHistoryArray.length > 1) ? "flex" : "none";
   }
 }
 
-// স্বয়ংক্রিয়ভাবে পেজ পরিবর্তন ট্র্যাক করার অটোমেটিক ম্যাজিক লজিক
+// ব্যাক বাটনে চাপ দিলে ঠিক ১টি পেইজ পেছনে যাবে
+function goBackPage() {
+  if (pageHistoryArray.length > 1) {
+    pageHistoryArray.pop(); // বর্তমান পেইজ মুছে ফেলা
+    var previousPageId = pageHistoryArray[pageHistoryArray.length - 1];
+    renderPage(previousPageId);
+  }
+}
+
+/* =========================
+   AUTOMATIC PAGE TRACKER (SAFE)
+========================= */
 document.addEventListener("click", function(e) {
-  // অন-ক্লিক ইভেন্ট থেকে টার্গেট বাটন বা পেজ আইডি ধরা
   var btn = e.target.closest("button");
-  if (btn && btn.id !== "navBackBtn" && btn.id !== "navMusicBtn") {
+  // যদি বাটনটি চ্যাপ্টারের ভেতরের ছোট 'Continue' বাটন না হয়, তবেই পেইজ সেভ হবে
+  if (btn && btn.id !== "navBackBtn" && btn.id !== "navMusicBtn" && !btn.id.includes("NextBtn") && !btn.id.includes("Line")) {
     setTimeout(function() {
       var allSections = document.querySelectorAll("section, .page");
       allSections.forEach(function(sec) {
-        // যেই সেকশনটি এখন দেখা যাচ্ছে (hidden ক্লাস নেই)
         if (!sec.classList.contains("hidden") && sec.style.display !== "none" && sec.id) {
           if (pageHistoryArray[pageHistoryArray.length - 1] !== sec.id) {
             pageHistoryArray.push(sec.id);
           }
         }
       });
-    }, 100);
+    }, 150);
   }
 });
+
 
 /* =========================
    HIDE ALL PAGES
