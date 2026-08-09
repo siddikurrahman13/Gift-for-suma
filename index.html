@@ -11,16 +11,20 @@
 </head>
 
 <body>
-<!-- Navigation Buttons -->
-<div class="top-nav-controls">
-  <button id="navBackBtn" onclick="goBackPage()">⬅ Back</button>
-  <button id="navMusicBtn" onclick="toggleAudio()">🎵 Music</button>
-</div>
-
-<!-- Audio File -->
-<audio id="bgMusic" loop src="birthday-music.mp3"></audio>
 
     <div class="stars"></div>
+    <!-- =========================
+     TOP NAVIGATION BUTTONS
+========================= -->
+<div class="topNavButtons">
+    <button id="musicBtn" class="topNavBtn">
+        🎵 <span>Music</span>
+    </button>
+
+    <button id="backBtn" class="topNavBtn">
+        ← <span>Back</span>
+    </button>
+</div>
 
     <!-- Welcome -->
     <section id="welcome">
