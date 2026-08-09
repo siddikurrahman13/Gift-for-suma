@@ -20,7 +20,7 @@ function toggleAudio() {
 }
 
 /* =========================
-   2. SAFE BACK BUTTON LOGIC
+   2. BACK BUTTON LOGIC
 ========================= */
 var pageHistoryArray = [];
 
@@ -28,7 +28,7 @@ function goBackPage() {
   if (pageHistoryArray.length > 1) {
     pageHistoryArray.pop();
     var previousPageId = pageHistoryArray[pageHistoryArray.length - 1];
-
+    
     var allSections = document.querySelectorAll("section, .page");
     allSections.forEach(function(sec) {
       sec.classList.add("hidden");
@@ -38,13 +38,13 @@ function goBackPage() {
     if (targetSec) {
       targetSec.classList.remove("hidden");
     }
-
-    var backBtn = document.getElementById("navBackBtn");
-    if (backBtn) {
-      backBtn.style.display = (pageHistoryArray.length > 1) ? "flex" : "none";
-    }
+  } else {
+    window.history.back();
   }
 }
+/* ======================================================== */
+/* নিচে তোমার আগের সব অরিজিনাল কোড অপরিবর্তিত থাকবে */
+/* ======================================================== */
 
 
 /* =========================
