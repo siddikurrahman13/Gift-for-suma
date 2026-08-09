@@ -1,4 +1,53 @@
 /* =========================
+   1. MUSIC CONTROLLER LOGIC
+========================= */
+function toggleAudio() {
+  const music = document.getElementById("bgMusic");
+  const btn = document.getElementById("navMusicBtn");
+
+  if (!music) return;
+
+  if (music.paused) {
+    music.play().then(function() {
+      btn.innerHTML = "⏸ Pause";
+    }).catch(function(err) {
+      console.log("Audio play error:", err);
+    });
+  } else {
+    music.pause();
+    btn.innerHTML = "♫ Music";
+  }
+}
+
+/* =========================
+   2. SAFE BACK BUTTON LOGIC
+========================= */
+var pageHistoryArray = [];
+
+function goBackPage() {
+  if (pageHistoryArray.length > 1) {
+    pageHistoryArray.pop();
+    var previousPageId = pageHistoryArray[pageHistoryArray.length - 1];
+
+    var allSections = document.querySelectorAll("section, .page");
+    allSections.forEach(function(sec) {
+      sec.classList.add("hidden");
+    });
+
+    var targetSec = document.getElementById(previousPageId);
+    if (targetSec) {
+      targetSec.classList.remove("hidden");
+    }
+
+    var backBtn = document.getElementById("navBackBtn");
+    if (backBtn) {
+      backBtn.style.display = (pageHistoryArray.length > 1) ? "flex" : "none";
+    }
+  }
+}
+
+
+/* =========================
    HIDE ALL PAGES
 ========================= */
 
