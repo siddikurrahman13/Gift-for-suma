@@ -254,7 +254,7 @@ const chapter2Lines = [
   "সময় চলে গেল। Days became months... আর আমি ভেবেছিলাম, হয়তো গল্পটা এখানেই শেষ।",
   "But some stories don't end when we think they do...",
   "Because then came 2 June 2025. ✨",
-  "একদিন হঠাৎ... an unknown number থেকে একটা message এলো।",
+  "সেইদিন হঠাৎ... an unknown number থেকে একটা message এলো।",
   "আর message-এর ওপাশে ছিলি... তুই। ❤️",
   "কী অদ্ভুত না? এতদিন পরেও somehow, we found our way back to each other.",
   "তারপর থেকে আবার কথা... আবার সেই পরিচিত feeling... আর এবার গল্পটা আর হারিয়ে যায়নি।",
