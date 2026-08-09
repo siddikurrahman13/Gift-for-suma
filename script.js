@@ -1,21 +1,3 @@
-// Audio logic
-function toggleAudio() {
-  const music = document.getElementById("bgMusic");
-  const btn = document.getElementById("navMusicBtn");
-  if (music.paused) {
-    music.play();
-    btn.innerHTML = "⏸️ Pause";
-  } else {
-    music.pause();
-    btn.innerHTML = "🎵 Music";
-  }
-}
-
-// Back Button logic
-function goBackPage() {
-  window.history.back(); // এটা ব্রাউজারের ব্যাক বাটন হিসেবে কাজ করবে
-}
-
 /* =========================
    HIDE ALL PAGES
 ========================= */
