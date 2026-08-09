@@ -1,56 +1,109 @@
 /* =========================
-GLOBAL NAVIGATION & STATE
+   PAGE HISTORY & NAVIGATION
 ========================= */
-let navigationHistory = [];
-let currentPage = "welcome";
-let globalMusic = null;
-let musicReady = false;
+let pageHistory = ["welcome"];
+
+function showPage(pageId, isBack = false) {
+  const targetPage = document.getElementById(pageId);
+  if (!targetPage) return;
+
+  // Clear typing intervals to prevent text overlap
+  if (typeof chapter1Typing !== 'undefined' && chapter1Typing) clearInterval(chapter1Typing);
+  if (typeof chapter2Typing !== 'undefined' && chapter2Typing) clearInterval(chapter2Typing);
+  if (typeof chapter3Typing !== 'undefined' && chapter3Typing) clearInterval(chapter3Typing);
+  if (typeof birthdayTyping !== 'undefined' && birthdayTyping) clearInterval(birthdayTyping);
+
+  hideAllPages();
+  
+  if (pageId === "finalChapter" || pageId === "birthdayReveal" || pageId === "celebrationScene" || pageId === "ultimateEnding") {
+    targetPage.style.display = "flex";
+  }
+  
+  targetPage.classList.remove("hidden");
+
+  if (!isBack) {
+    if (pageHistory[pageHistory.length - 1] !== pageId) {
+      pageHistory.push(pageId);
+    }
+  }
+
+  // Back button visibility check
+  const backBtn = document.getElementById("navBackBtn");
+  if (backBtn) {
+    backBtn.style.display = (pageHistory.length > 1) ? "flex" : "none";
+  }
+}
+
+function goBackPage() {
+  if (pageHistory.length > 1) {
+    pageHistory.pop(); // Current page removed
+    const previousPageId = pageHistory[pageHistory.length - 1];
+    showPage(previousPageId, true);
+  }
+}
 
 /* =========================
-PAGE SHOW / HIDE SYSTEM
+   MUSIC CONTROLLER
+========================= */
+function toggleAudio() {
+  const music = document.getElementById("bgMusic");
+  const btn = document.getElementById("navMusicBtn");
+
+  if (music.paused) {
+    music.play().then(() => {
+      btn.innerHTML = "⏸️ Pause Music";
+      btn.classList.add("playing");
+    }).catch(err => console.log("Audio playback error:", err));
+  } else {
+    music.pause();
+    btn.innerHTML = "🎵 Play Music";
+    btn.classList.remove("playing");
+  }
+}
+
+/* =========================
+   HIDE ALL PAGES
 ========================= */
 function hideAllPages() {
   const pages = [
-    "welcome", "passwordPage", "envelopePage", "letterPage", 
-    "chapter2", "chapter3", "finalChapter", "birthdayReveal", 
-    "celebrationScene", "ultimateEnding"
+    "welcome",
+    "passwordPage",
+    "envelopePage",
+    "letterPage",
+    "chapter2",
+    "chapter3",
+    "finalChapter",
+    "birthdayReveal",
+    "celebrationScene",
+    "ultimateEnding"
   ];
+
   pages.forEach(function (id) {
     const page = document.getElementById(id);
     if (page) {
       page.classList.add("hidden");
+      page.style.display = "";
     }
   });
 }
 
-function showPage(id) {
-  const current = document.querySelector(".page:not(.hidden), #welcome:not(.hidden)");
-  if (current && current.id !== id && !window.isGoingBack) {
-    navigationHistory.push(current.id);
-  }
-  
-  hideAllPages();
-  const page = document.getElementById(id);
-  if (!page) return;
-  
-  page.classList.remove("hidden");
-  page.style.display = "";
-  currentPage = id;
-  updateGlobalBackButton();
-}
-
 /* =========================
-WELCOME → PASSWORD
+   WELCOME → PASSWORD
 ========================= */
 function nextPage() {
   showPage("passwordPage");
 }
 
 /* =========================
-PASSWORD → ENVELOPE
+   PASSWORD → ENVELOPE
 ========================= */
 function checkPassword() {
-  const pass = document.getElementById("password").value.toLowerCase().trim();
+  const pass = document
+    .getElementById("password")
+    .value
+    .toLowerCase()
+    .trim();
+
   if (pass === "favourite chapter") {
     showPage("envelopePage");
   } else {
@@ -59,16 +112,18 @@ function checkPassword() {
 }
 
 /* =========================
-ENVELOPE → CHAPTER 1
+   ENVELOPE → CHAPTER 1
 ========================= */
 function openEnvelope() {
   showPage("letterPage");
-  document.getElementById("nextChapterBtn").style.display = "none";
+  document
+    .getElementById("nextChapterBtn")
+    .style.display = "none";
   startLetter();
 }
 
 /* =========================
-CHAPTER 1 (LETTER)
+   CHAPTER 1
 ========================= */
 const lines = [
   "Hey tui... ❤️",
@@ -85,20 +140,26 @@ let chapter1Typing = null;
 
 function startLetter() {
   line = 0;
-  document.getElementById("typewriter").innerHTML = "";
+  document
+    .getElementById("typewriter")
+    .innerHTML = "";
   showNextLine();
 }
 
 function showNextLine() {
   if (line >= lines.length) {
     setTimeout(function () {
-      document.getElementById("nextChapterBtn").style.display = "block";
+      document
+        .getElementById("nextChapterBtn")
+        .style.display = "block";
     }, 500);
     return;
   }
+
   const text = lines[line];
   let i = 0;
   const box = document.getElementById("typewriter");
+  
   chapter1Typing = setInterval(function () {
     box.innerHTML += text.charAt(i);
     i++;
@@ -112,7 +173,7 @@ function showNextLine() {
 }
 
 /* =========================
-CHAPTER 1 → CHAPTER 2
+   CHAPTER 1 → CHAPTER 2
 ========================= */
 function goToChapter2() {
   showPage("chapter2");
@@ -120,7 +181,7 @@ function goToChapter2() {
 }
 
 /* =========================
-CHAPTER 2
+   CHAPTER 2
 ========================= */
 const chapter2Lines = [
   "Our story didn't really start with a beautiful moment... 🤍",
@@ -161,32 +222,41 @@ let chapter2Typing = null;
 
 function startChapter2() {
   chapter2Line = 0;
-  document.getElementById("chapter2Story").innerHTML = "";
+  document
+    .getElementById("chapter2Story")
+    .innerHTML = "";
   showChapter2Line();
 }
 
 function showChapter2Line() {
   const box = document.getElementById("chapter2Story");
   const btn = document.getElementById("chapter2NextBtn");
-  
+
   if (chapter2Line >= chapter2Lines.length) {
     btn.innerHTML = "📖 Continue to Chapter 3";
     btn.style.display = "inline-block";
     btn.onclick = goToChapter3;
     return;
   }
-  
+
   const text = chapter2Lines[chapter2Line];
   let specialClass = "";
-  if (text.includes("28 November 2023")) specialClass = "dateMoment";
-  if (text.includes("27 April 2024")) specialClass = "sadMoment";
-  if (text.includes("2 June 2025")) specialClass = "returnMoment";
+
+  if (text.includes("28 November 2023")) {
+    specialClass = "dateMoment";
+  }
+  if (text.includes("27 April 2024")) {
+    specialClass = "sadMoment";
+  }
+  if (text.includes("2 June 2025")) {
+    specialClass = "returnMoment";
+  }
 
   box.innerHTML = `<div class="chapterStoryText ${specialClass}"></div>`;
   const textBox = box.querySelector(".chapterStoryText");
   let i = 0;
   btn.style.display = "none";
-  
+
   chapter2Typing = setInterval(function () {
     textBox.innerHTML += text.charAt(i);
     i++;
@@ -201,7 +271,7 @@ function showChapter2Line() {
 }
 
 /* =========================
-CHAPTER 2 → CHAPTER 3
+   CHAPTER 2 → CHAPTER 3
 ========================= */
 function goToChapter3() {
   showPage("chapter3");
@@ -209,7 +279,7 @@ function goToChapter3() {
 }
 
 /* =========================
-CHAPTER 3
+   CHAPTER 3
 ========================= */
 const chapter3Lines = [
   "At first, everything was pretty simple... 😊",
@@ -232,8 +302,12 @@ let chapter3Typing = null;
 
 function startChapter3() {
   chapter3Line = 0;
-  document.getElementById("chapter3Story").innerHTML = "";
-  document.getElementById("chapter3NextBtn").style.display = "none";
+  document
+    .getElementById("chapter3Story")
+    .innerHTML = "";
+  document
+    .getElementById("chapter3NextBtn")
+    .style.display = "none";
   showNextChapter3Line();
 }
 
@@ -267,14 +341,14 @@ function showNextChapter3Line() {
 }
 
 /* =========================
-CHAPTER 3 → FINAL CHAPTER
+   CHAPTER 3 → FINAL CHAPTER
 ========================= */
 function goToFinalChapter() {
   showPage("finalChapter");
 }
 
 /* =========================
-BIRTHDAY WISH & SURPRISE
+   BIRTHDAY WISH
 ========================= */
 const birthdayLines = [
   "আজকের দিনটা শুধু একটা date না... 🤍",
@@ -287,17 +361,28 @@ const birthdayLines = [
 let birthdayLine = 0;
 let birthdayTyping = null;
 
+/* =========================
+   OPEN FINAL SURPRISE
+   FINAL CHAPTER → BIRTHDAY WISH
+========================= */
 function openFinalSurprise() {
   showPage("birthdayReveal");
+
   birthdayLine = 0;
   const box = document.getElementById("birthdayMessage");
   box.innerHTML = "";
+
   const btn = document.getElementById("oneMoreBtn");
   btn.innerHTML = "Continue ✨";
   btn.style.display = "none";
+
   showBirthdayLine();
 }
 
+/* =========================
+   BIRTHDAY TYPEWRITER
+   ONE SENTENCE AT A TIME
+========================= */
 function showBirthdayLine() {
   const box = document.getElementById("birthdayMessage");
   const btn = document.getElementById("oneMoreBtn");
@@ -321,6 +406,7 @@ function showBirthdayLine() {
       clearInterval(birthdayTyping);
       birthdayTyping = null;
       birthdayLine++;
+
       btn.innerHTML = "Continue ✨";
       btn.style.display = "inline-block";
       btn.onclick = showBirthdayLine;
@@ -329,27 +415,49 @@ function showBirthdayLine() {
 }
 
 /* =========================
-BIRTHDAY WISH → CELEBRATION
+   BIRTHDAY WISH → CELEBRATION
 ========================= */
 function goToCelebration() {
   showPage("celebrationScene");
+
   const message = document.getElementById("celebrationMessage");
   message.innerHTML = "";
-  document.getElementById("celebrationContinueBtn").style.display = "none";
-  document.getElementById("makeWishBtn").style.display = "inline-block";
-  document.getElementById("celebrationConfetti").innerHTML = "";
+
+  document
+    .getElementById("celebrationContinueBtn")
+    .style.display = "none";
+  document
+    .getElementById("makeWishBtn")
+    .style.display = "inline-block";
+  document
+    .getElementById("celebrationConfetti")
+    .innerHTML = "";
 }
 
+/* =========================
+   MAKE A WISH
+========================= */
 function startCelebration() {
   const wishButton = document.getElementById("makeWishBtn");
   const message = document.getElementById("celebrationMessage");
   const continueBtn = document.getElementById("celebrationContinueBtn");
 
   wishButton.style.display = "none";
-  message.innerHTML = `<p class="wishMoment"> Close your eyes... 🤍 <br><br> Make a wish. ✨ </p>`;
+
+  message.innerHTML = `
+<p class="wishMoment">
+Close your eyes... 🤍
+<br><br>
+Make a wish. ✨
+</p>
+`;
 
   setTimeout(function () {
-    message.innerHTML = `<p class="wishMoment"> And now... make it come true. ❤️ </p>`;
+    message.innerHTML = `
+<p class="wishMoment">
+And now... make it come true. ❤️
+</p>
+`;
     createConfetti();
   }, 2200);
 
@@ -358,10 +466,15 @@ function startCelebration() {
   }, 4200);
 }
 
+/* =========================
+   CONFETTI
+========================= */
 function createConfetti() {
   const container = document.getElementById("celebrationConfetti");
   const pieces = ["🎉", "🎊", "✨", "💖", "💫", "🌸"];
+
   container.innerHTML = "";
+
   for (let i = 0; i < 35; i++) {
     const piece = document.createElement("span");
     piece.innerHTML = pieces[Math.floor(Math.random() * pieces.length)];
@@ -373,10 +486,12 @@ function createConfetti() {
 }
 
 /* =========================
-CELEBRATION → FINAL MESSAGE
+   CELEBRATION → FINAL MESSAGE
+   CINEMATIC TYPING ENDING
 ========================= */
 function goToFinalMessage() {
   showPage("ultimateEnding");
+
   const box = document.getElementById("ultimateText");
   box.innerHTML = "";
 
@@ -398,12 +513,18 @@ function goToFinalMessage() {
   let currentLine = 0;
 
   function typeFinalLine() {
-    if (currentLine >= finalLines.length) return;
+    if (currentLine >= finalLines.length) {
+      return;
+    }
 
     const paragraph = document.createElement("p");
     paragraph.className = "finalTypingLine";
     box.appendChild(paragraph);
-    paragraph.scrollIntoView({ behavior: "smooth", block: "center" });
+
+    paragraph.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
 
     const text = finalLines[currentLine];
     let i = 0;
@@ -414,106 +535,22 @@ function goToFinalMessage() {
       if (i >= text.length) {
         clearInterval(typing);
         currentLine++;
-        setTimeout(typeFinalLine, 1200);
+        setTimeout(function () {
+          typeFinalLine();
+        }, 1200);
       }
     }, 45);
   }
 
-  setTimeout(typeFinalLine, 1000);
+  setTimeout(function () {
+    typeFinalLine();
+  }, 1000);
 }
 
 /* =========================
-GLOBAL NAVIGATION & MUSIC
-========================= */
-function createGlobalNavigation() {
-  if (document.getElementById("globalNavigation")) return;
-
-  const nav = document.createElement("div");
-  nav.id = "globalNavigation";
-  nav.className = "global-nav";
-
-  const backBtn = document.createElement("button");
-  backBtn.id = "globalBackBtn";
-  backBtn.className = "global-nav-btn";
-  backBtn.innerHTML = `<span class="global-nav-icon">‹</span> <span>Back</span>`;
-  backBtn.onclick = globalBack;
-
-  const musicBtn = document.createElement("button");
-  musicBtn.id = "globalMusicBtn";
-  musicBtn.className = "global-nav-btn";
-  musicBtn.innerHTML = `<span class="global-nav-icon">♫</span> <span>Music</span>`;
-  musicBtn.onclick = toggleGlobalMusic;
-
-  nav.appendChild(backBtn);
-  nav.appendChild(musicBtn);
-  document.body.appendChild(nav);
-
-  updateGlobalBackButton();
-}
-
-function globalBack() {
-  if (!navigationHistory || navigationHistory.length === 0) return;
-  window.isGoingBack = true;
-  const previous = navigationHistory.pop();
-  if (previous) {
-    showPage(previous);
-  }
-  window.isGoingBack = false;
-  updateGlobalBackButton();
-}
-
-function updateGlobalBackButton() {
-  const btn = document.getElementById("globalBackBtn");
-  if (!btn) return;
-  if (!navigationHistory || navigationHistory.length === 0) {
-    btn.classList.add("nav-disabled");
-  } else {
-    btn.classList.remove("nav-disabled");
-  }
-}
-
-function setupGlobalMusic() {
-  if (globalMusic) return;
-  globalMusic = document.createElement("audio");
-  globalMusic.id = "globalBackgroundMusic";
-  globalMusic.src = "music.mp3";
-  globalMusic.loop = true;
-  globalMusic.preload = "auto";
-  globalMusic.volume = 0.35;
-  document.body.appendChild(globalMusic);
-  musicReady = true;
-
-  globalMusic.addEventListener("play", updateMusicButton);
-  globalMusic.addEventListener("pause", updateMusicButton);
-}
-
-function toggleGlobalMusic() {
-  if (!musicReady) setupGlobalMusic();
-  if (globalMusic.paused) {
-    globalMusic.play().then(updateMusicButton).catch(console.log);
-  } else {
-    globalMusic.pause();
-    updateMusicButton();
-  }
-}
-
-function updateMusicButton() {
-  const btn = document.getElementById("globalMusicBtn");
-  if (!btn || !globalMusic) return;
-  if (!globalMusic.paused) {
-    btn.classList.add("music-playing");
-    btn.innerHTML = `<span class="global-nav-icon">♫</span> <span>Playing</span>`;
-  } else {
-    btn.classList.remove("music-playing");
-    btn.innerHTML = `<span class="global-nav-icon">♫</span> <span>Music</span>`;
-  }
-}
-
-/* =========================
-PAGE LOAD INITIALIZATION
+   PAGE LOAD
 ========================= */
 window.addEventListener("load", function () {
-  createGlobalNavigation();
-  setupGlobalMusic();
+  pageHistory = ["welcome"];
   showPage("welcome");
 });
