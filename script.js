@@ -235,13 +235,13 @@ function goToChapter2() {
 ========================= */
 const chapter2Lines = [
   "Our story didn't really start with a beautiful moment... 🤍",
-  "বরং শুরুটা হয়েছিল একটা classroom-এ... আর একটা ছোট্ট ঝগড়া দিয়ে। 😬",
+  "বরং শুরুটা হয়েছিল একটা classroom এ... আর একটা ছোট্ট ঝগড়া দিয়ে। 😬",
   "সেদিন কে জানত, ওই মানুষটার সাথেই একদিন এত কথা জমে থাকবে... এত memories তৈরি হবে।",
   "At that time, we weren't even close... সত্যি বলতে, friend বললেও হয়তো একটু বেশি বলা হয়ে যেত।",
   "Then came 28 November 2023... ✨",
-  "একটা simple video-তে তোর একটা comment... আর somehow, সেখান থেকেই আবার আমাদের কথা শুরু হলো।",
+  "একটা simple video তে তোর একটা comment... আর somehow, সেখান থেকেই আবার আমাদের কথা শুরু হলো।",
   "কথা বলতে বলতে একসময় তুই আমাকে তোর number দিতে চাইলি।",
-  "But TikTok-এর privacy তখন আমাদের একটু পরীক্ষা নিতে চেয়েছিল। 😭😂",
+  "But TikTok এর privacy তখন আমাদের একটু পরীক্ষা নিতে চেয়েছিল। 😭😂",
   "তাই numberটা সরাসরি দেখাতে না পেরে তুই যেভাবে দিলি...",
   "\"zero one seven\" 😁",
   "সত্যি বলছি, তোর ওই বুদ্ধি দেখে আমি সেদিন একটু অবাকই হয়েছিলাম। 😂❤️",
@@ -255,7 +255,7 @@ const chapter2Lines = [
   "But some stories don't end when we think they do...",
   "Because then came 2 June 2025. ✨",
   "সেইদিন হঠাৎ... an unknown number থেকে একটা message এলো।",
-  "আর message-এর ওপাশে ছিলি... তুই। ❤️",
+  "আর message এর ওপাশে ছিলি... তুই। ❤️",
   "কী অদ্ভুত না? এতদিন পরেও somehow, we found our way back to each other.",
   "তারপর থেকে আবার কথা... আবার সেই পরিচিত feeling... আর এবার গল্পটা আর হারিয়ে যায়নি।",
   "Maybe that's what makes our story a little different...",
@@ -362,7 +362,7 @@ const chapter3Lines = [
   "মাঝে মাঝে সত্যিই বিরক্ত করতি, but somehow... that stubborn little side of you became one of my favourite things. 😂",
   "কিন্তু জানিস...",
   "ঠিক কখন তুই আমার কাছে এতটা important হয়ে গেলি, সেটা আমি নিজেও বুঝতে পারিনি।",
-  "কোনো particular moment ছিল না... কোনো special day-ও না।",
+  "কোনো particular moment ছিল না... কোনো special day ও না।",
   "Maybe it happened somewhere between all those random talks, stupid jokes, little arguments and endless nights...",
   "কখন যে 'তুই' শুধু একজন মানুষ না হয়ে আমার favourite person হয়ে গেলি... I just didn't notice. 🤍",
   "And maybe... that's the part I never really said. ❤️"
@@ -597,11 +597,11 @@ function goToFinalMessage() {
     "From a classroom argument to endless midnight conversations...",
     "কী সুন্দর একটা little journey হয়ে গেছে, তাই না? ❤️",
     "আর যদি আজ তোর জন্য একটা wish করতে পারতাম...",
-    "তাহলে চাইতাম, life তোকে ঠিক সেই happiness-টাই দিক, যেটা তুই unknowingly আমার জীবনে নিয়ে এসেছিস। 🤍",
+    "তাহলে চাইতাম, life তোকে ঠিক সেই happiness টাই দিক, যেটা তুই unknowingly আমার জীবনে নিয়ে এসেছিস। 🤍",
     "This whole little world you just walked through...",
     "এটা শুধু একটা website ছিল না।",
     "এটা ছিল আমার মনে জমে থাকা কিছু কথা... শুধু তোর জন্য। ❤️",
-    "21 August — তোর day, আর somehow এখন আমার কাছেও এই দিন টি special একটা দিন।",
+    "21 August  তোর day, আর somehow এখন আমার কাছেও এই দিন টি special একটা দিন।",
     "সবসময় happy থাকিস। হাসিস। আর নিজের মতোই থাকিস। 🤍",
     "— From someone who's really glad you found your way back. ❤️"
   ];
