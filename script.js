@@ -356,7 +356,7 @@ const chapter3Lines = [
   "At first, everything was pretty simple... 😊",
   "আমি একটু বেশি fun করতাম, আর তুইও সেগুলো equally enjoy করতি।",
   "তারপর কখন যে আমরা এতটা close হয়ে গেলাম... honestly, I didn't even notice. 🤍",
-  "কিছু রাত তো এমনও গেছে—9টা-10টায় কথা শুরু করে কখন যে সকাল 5টা-6টা বেজে গেছে, বুঝতেই পারিনি। 🌙",
+  "কিছু রাত তো এমনও গেছে 9টা-10টায় কথা শুরু করে কখন যে সকাল 5টা-6টা বেজে গেছে, বুঝতেই পারিনি। 🌙",
   "সবচেয়ে অবাক করার বিষয়... এতক্ষণ কথা বলার পরেও আমাদের কথা যেন কখনো শেষ হতো না।",
   "আর তোর ওই জেদটা... 😑❤️",
   "মাঝে মাঝে সত্যিই বিরক্ত করতি, but somehow... that stubborn little side of you became one of my favourite things. 😂",
@@ -364,7 +364,7 @@ const chapter3Lines = [
   "ঠিক কখন তুই আমার কাছে এতটা important হয়ে গেলি, সেটা আমি নিজেও বুঝতে পারিনি।",
   "কোনো particular moment ছিল না... কোনো special day ও না।",
   "Maybe it happened somewhere between all those random talks, stupid jokes, little arguments and endless nights...",
-  "কখন যে 'তুই' শুধু একজন মানুষ না হয়ে আমার favourite person হয়ে গেলি... I just didn't notice. 🤍",
+  "কখন যে তুই শুধু একজন মানুষ না হয়ে আমার favourite person হয়ে গেলি... I just didn't notice. 🤍",
   "And maybe... that's the part I never really said. ❤️"
 ];
 
@@ -442,8 +442,8 @@ function goToFinalChapter() {
 const birthdayLines = [
   "আজকের দিনটা শুধু একটা date না... 🤍",
   "আজ এমন একজন মানুষের birthday, যে somehow আমার গল্পের একটা very special part হয়ে গেছে। ❤️",
-  "তোর জন্য আমার একটাই wish—",
-  "তুই সবসময় হাসিস, happy থাকিস, আর তোর ছোট-বড় সব dream একদিন সত্যি হোক। ✨",
+  "তোর জন্য আমার একটাই wish",
+  "তুই সবসময় হাসিস, happy থাকিস, আর তোর ছোট বড় সব dream একদিন সত্যি হোক। ✨",
   "আর জীবন তোকে যত দূরেই নিয়ে যাক... তোর এই সুন্দর হাসিটা যেন কখনো হারিয়ে না যায়। 🤍"
 ];
 
@@ -603,7 +603,7 @@ function goToFinalMessage() {
     "এটা ছিল আমার মনে জমে থাকা কিছু কথা... শুধু তোর জন্য। ❤️",
     "21 August  তোর day, আর somehow এখন আমার কাছেও এই দিন টি special একটা দিন।",
     "সবসময় happy থাকিস। হাসিস। আর নিজের মতোই থাকিস। 🤍",
-    "— From someone who's really glad you found your way back. ❤️"
+    "From someone who's really glad you found your way back. ❤️"
   ];
 
   let currentLine = 0;
