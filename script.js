@@ -168,7 +168,7 @@ const lines = [
   "Haa... tokei bolchi. 😊",
   "Hoyto vabchis...",
   "Eta sudhu ekta website... na",
-  "Eta amar tor jonno banano ekta chotto surprise. 🤍",
+  "Eta amar tor jonno bananu ekta chutto surprise. 🤍",
   "So aste aste por...",
   "Golpota ekhono shesh hoyni... ✨"
 ];
@@ -243,13 +243,13 @@ const chapter2Lines = [
   "কথা বলতে বলতে একসময় তুই আমাকে তোর number দিতে চাইলি।",
   "But TikTok এর privacy তখন আমাদের একটু পরীক্ষা নিতে চেয়েছিল। 😭😂",
   "তাই numberটা সরাসরি দেখাতে না পেরে তুই যেভাবে দিলি...",
-  "\"zero one seven\" 😁",
+  "zero one seven... eivabe kore😁",
   "সত্যি বলছি, তোর ওই বুদ্ধি দেখে আমি সেদিন একটু অবাকই হয়েছিলাম। 😂❤️",
   "তারপর... একটার পর একটা দিন চলে গেল।",
   "কথা বাড়তে থাকল, রাতগুলো একটু একটু করে ছোট হতে থাকল... আর অজান্তেই তুই হয়ে উঠলি আমার পরিচিত মানুষগুলোর মধ্যে একটু আলাদা একজন।",
   "But then... 27 April 2024. 💔",
   "হঠাৎ করেই তুই হারিয়ে গেলি।",
-  "কোনো proper goodbye ছিল না... কোনো explanation-ও না।",
+  "কোনো proper goodbye ছিল না... কোনো explanation ও না।",
   "আমি তোকে খুঁজেছি... কিন্তু কোথাও পেলাম না।",
   "সময় চলে গেল। Days became months... আর আমি ভেবেছিলাম, হয়তো গল্পটা এখানেই শেষ।",
   "But some stories don't end when we think they do...",
@@ -602,7 +602,7 @@ function goToFinalMessage() {
     "এটা শুধু একটা website ছিল না।",
     "এটা ছিল আমার মনে জমে থাকা কিছু কথা... শুধু তোর জন্য। ❤️",
     "21 August  তোর day, আর somehow এখন আমার কাছেও এই দিন টি special একটা দিন।",
-    "সবসময় happy থাকিস। হাসিস। আর নিজের মতোই থাকিস। 🤍",
+    "সবসময় happy থাকিস,হাসিস,আর নিজের মতোই থাকিস। 🤍",
     "From someone who's really glad you found your way back. ❤️"
   ];
 
